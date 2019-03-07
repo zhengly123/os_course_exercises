@@ -47,7 +47,7 @@
 
 - RV中BBL的启动过程大致包括哪些内容？
 
-  
+  初始化、选择是否从kernel_start或者_payload_start启动系统。
 
 ## 3.3 中断、异常和系统调用比较
 - 什么是中断、异常和系统调用？
@@ -126,7 +126,13 @@
   - 恢复标志寄存器
   - 恢复ESP和SS（返回权限发生变化）
 
+  所以可以发现int和iret涉及权限和堆栈的转换，但函数调用并不会。
+
 - 通过分析RV中函数调用规范以及`ecall`、`eret`、`jal`和`jalr`的指令准确功能和调用代码，比较x86中函数调用与系统调用的堆栈操作有什么不同？
+
+  RISCV中的ecall产生了一个特殊的异常，通过进入exception handler来进入调用。
+
+  eret从trap中返回，x RET sets the pc to the value stored in the x epc register.
 
 
 ## 课堂实践 （在课堂上根据老师安排完成，课后不用做）
