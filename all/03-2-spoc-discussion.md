@@ -22,35 +22,97 @@ NOTICE
 ### 6.2	段式存储管理
  1. 什么是段、段基址和段内偏移？
 
+    段：内存分块的管理区域。
+
+    段基址：内存段的起始地址
+
 
  1. 段式存储管理机制的地址转换流程是什么？为什么在段式存储管理中，各段的存储位置可以不连续？这种做法有什么好处和麻烦？
+
+    段基址+段内便宜
+
+    因为程序不会跨段访问，所以可以分开
+
+    加强了管理的便利但导致了地址转换复杂
 
 
 ### 6.3	页式存储管理
  1. 什么是页（page）、帧（frame）、页表（page table）、存储管理单元（MMU）、快表（TLB, Translation Lookaside Buffer）和高速缓存（cache）？
+
+    页是内存管理的逻辑单位，Frame为物理单位，page table is a table which enables the conversion from LPN to PPN. 
+
+    MMU是它是一种负责处理中央处理器（CPU）的内存访问请求的计算机硬件。它的功能包括虚拟地址到物理地址的转换（即虚拟内存管理）[1]、内存保护、中央处理器高速缓存的控制，在较为简单的计算机体系结构中，负责总线的仲裁以及存储体切换（bank switching，尤其是在8位的系统上）。
+
+    TLB is the cache of Page Table.
+
+    cache is a partial backup of memory for speedup.
+
  1. 页式存储管理机制的地址转换流程是什么？为什么在页式存储管理中，各页的存储位置可以不连续？这种做法有什么好处和麻烦？
+
+    减少外碎片。但地址转换更加复杂。
 
 
 ### 6.4	页表概述
  1. 每个页表项有些什么内容？有哪些标志位？它们起什么作用？
+
+    Available, 
+
  1. 页表大小受哪些因素影响？
+
+    Total size of PT, size of page, number of processes
 
 
 ### 6.5	快表和多级页表
  1. 快表（TLB）与高速缓存（cache）有什么不同？
+
+    TLB is a cache only for PT. But cache is a  backup of memory.
+
  1. 为什么快表中查找物理地址的速度非常快？它是如何实现的？为什么它的的容量很小？
+
+    TLB is more efficient but smaller.
+
+    Due to its cost and energy power.
+
  1. 什么是多级页表？多级页表中的地址转换流程是什么？多级页表有什么好处和麻烦？
+
+    多级页表就是页表项分成多个。依次转换。
+
+    可以节约the size of PT.
+
+    But it can be difficult for logical address conversion and come with more overhead. 
 
 
 ### 6.6	反置页表
  1. 页寄存器机制的地址转换流程是什么？
+
+    依次查找寄存，找到对应的物理地址。
+
  1. 反置页表机制的地址转换流程是什么？
+
+    通过hash table get the first possible item in page table.
+
+    Iterating the hast table until successful find or fail.
+
  1. 反置页表项有些什么内容？
+
+    PID LPN Flags
 
 ### 6.7	段页式存储管理
  1. 段页式存储管理机制的地址转换流程是什么？这种做法有什么好处和麻烦？
+
+    先进性段转换，再页转换。
+
+    既能够实现内存细粒度划分，又能实现权限管理。
+
+    转换复杂。
+
  1. 如何实现基于段式存储管理的内存共享？
+
+    多个段共享同一个物理地址区域
+
  1. 如何实现基于页式存储管理的内存共享？
+
+    多个页共享同一个物理地址区域
 
 ## 个人思考题
 （1） (w3l2) 请简要分析64bit CPU体系结构下的分页机制是如何实现的
@@ -137,5 +199,5 @@ Virtual Address 7268:
  - 用C89, Python, Java, Javascript这4种语言实现了该CPU的模拟器；
  - 支持交叉编译；
  - 所有这些只依赖标准C库。
- 
+
 针对op-cpu的特征描述，请同学们通过代码阅读和执行对自己有兴趣的部分进行分析，给出你的分析结果和评价。
